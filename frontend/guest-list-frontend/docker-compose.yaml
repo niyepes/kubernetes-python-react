@@ -1,0 +1,46 @@
+version: '3.9'
+
+services:
+  backend:
+    build: ./backend
+    container_name: backend_test
+    ports:
+      - "5001:5000"
+    environment:
+      - MYSQL_HOST=db
+      - MYSQL_USER=host
+      - MYSQL_PASSWORD=testroot
+      - MYSQL_DATABASE=guestbook
+    depends_on:
+      db:
+        condition: service_healthy
+  frontend:
+    build: ./frontend/guest-list-frontend
+    container_name: frontend-test
+    environment:
+      - VITE_API_URL=http://backend:5000
+    ports:
+      - "5173:5173"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+  db:
+    image: mysql:8.0
+    container_name: db_test
+    environment:
+      - MYSQL_ROOT_PASSWORD=testroot
+      - MYSQL_DATABASE=guestbook
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql_data:
+    driver: local
