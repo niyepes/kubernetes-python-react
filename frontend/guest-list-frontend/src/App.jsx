@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-/* === Transcripción de MessagesList (imagen 1) === */
+
 function MessagesList({ messages }) {
   return (
     <div>
@@ -22,7 +22,7 @@ function MessagesList({ messages }) {
   );
 }
 
-/* === Formulario integrado (antes FormGuestbook) === */
+
 function GuestbookForm({ onMessageSent }) {
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
@@ -63,7 +63,6 @@ function GuestbookForm({ onMessageSent }) {
   );
 }
 
-/* === App principal (imagen 3) === */
 export default function Guestbook() {
   const [messages, setMessages] = useState([]);
 
